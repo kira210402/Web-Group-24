@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const cardSchema = new mongoose.Schema({
   key: {
@@ -13,8 +13,13 @@ const cardSchema = new mongoose.Schema({
 
   image: {
     type: String,
+  },
+
+  courseId: {
+    type: Schema.Types.ObjectId,
+    ref: 'course',
   }
-});
+}, { timestamps: true });
 
 const Card = mongoose.model("card", cardSchema);
 export default Card;

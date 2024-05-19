@@ -10,16 +10,22 @@ const courseSchema = new mongoose.Schema({
     type: String,
   },
 
-  createdAt: {
-    type: Date,
-    required: true,
-  },
+  folders: [{
+    type: Schema.Types.ObjectId,
+    ref: 'folder',
+  }],
 
   cards: [{
     type: Schema.Types.ObjectId,
-    ref: 'card'
+    ref: "card",
   }],
-});
+
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: "user",
+  },
+
+}, { timestamps: true });
 
 const Course = mongoose.model("course", courseSchema);
 export default Course;
