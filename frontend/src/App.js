@@ -8,6 +8,7 @@ import FlashCard from './Flash_card/Flash_card';
 import Profile from './Profile/Profile';
 import SignUp from './SignUp/SignUp';
 import Folder from './Folder/Folder';
+import Course from './Course/Course'
 import Create_course from './create-course/create_course';
 import UserCourse from './UserCourse/UserCourse';
 import UserDetail from './UserDetail/UserDetail';

@@ -11,5 +11,6 @@ courseRouter.get("/:id", authMiddleware.verifyToken, courseController.getOne);
 courseRouter.post("/", authMiddleware.verifyToken, courseController.create);
 courseRouter.put("/:id", authMiddleware.verifyToken, courseController.update);
 courseRouter.delete("/:id", authMiddleware.verifyToken, courseController.deleteCourse);
+courseRouter.get("/list/:userId", authMiddleware.verifyToken, courseController.getList); // Add this line
 
 export default courseRouter;

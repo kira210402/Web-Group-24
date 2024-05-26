@@ -327,6 +327,7 @@ function Profile() {
 
       <div className="kfirst">
         <div className="kfirst__heading">
+          <Link to="/">
           <svg
             className="kfirst__back"
             xmlns="http://www.w3.org/2000/svg"
@@ -349,6 +350,7 @@ function Profile() {
               />
             </g>
           </svg>
+          </Link>
           <div className="kfirst__title">
             <h1>My Profile</h1>
             <svg className="kfirst__paw" width="64px" height="64px" viewBox="0 0 20 20" version="1.1" fill="#000000">

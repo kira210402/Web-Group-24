@@ -6,10 +6,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./style.css";
 import { useParams } from 'react-router-dom';
-import Header from "../components/header/Header";
-import Footer from "../components/footer/Footer";
 
-function Folder(User) {
+function Course(User) {
   const [dropdownStatus, setDropdownStatus] = useState(false);
   const [customSelectActive, setCustomSelectActive] = useState(false);
   const [selectedValue, setSelectedValue] = useState("latest");
@@ -69,10 +67,6 @@ function Folder(User) {
     }
     setStatus(!status);
   };
-  const handleDropdownClick = () => {
-    setDropdownStatus(!dropdownStatus);
-  };
-
 
   const handleSelectClick = () => {
     setCustomSelectActive(!customSelectActive);
@@ -82,13 +76,86 @@ function Folder(User) {
     setSelectedValue(event.currentTarget.querySelector("label").textContent);
     setCustomSelectActive(false);
   };
+  const handlePopupClick = () => {
+    setPopupStatus(true);
+  };
 
+  const handleClosePopup = () => {
+    setPopupStatus(false);
+  };
+  //
+  // const toggleDropdown = () => {
+  //   if (!status) {
+  //     tl.current.play();
+  //   } else {
+  //     tl.current.reverse();
+  //   }
+  //   setStatus(!status);
+  // };
+
+  // const [isDropdownOpen, setDropdownOpen] = useState(false);
+  // const [selectedValue, setSelectedValue] = useState("latest");
+  // const [isDropdownOpenBrown, setDropdownOpenBrown] = useState(false);
+  // const [selectedValueBrown, setSelectedValueBrown] = useState("latest");
+
+  // const toggleDropdown1 = () => {
+  //   setDropdownOpen(!isDropdownOpen);
+  // };
+
+  // const toggleDropdownBrown = () => {
+  //   setDropdownOpenBrown(!isDropdownOpenBrown);
+  // };
+
+  // const selectOption = (value) => {
+  //   setSelectedValue(value);
+  //   setDropdownOpen(false);
+  // };
+
+  // const selectOptionBrown = (value) => {
+  //   setSelectedValueBrown(value);
+  //   setDropdownOpenBrown(false);
+  // };
+
+  // const handleAvatarClick = () => {
+  //   navigate(`/folder`, { state: { token, userId } });
+  // };
+
+  //
+  const [folders, setFolders] = useState([]);
+  const [popupStatus, setPopupStatus] = useState(false);
   const token = localStorage.getItem("token");
   const userId = localStorage.getItem("userId");
   const navigate = useNavigate();
 
+  const [newFolderTitle, setNewFolderTitle] = useState("");
+
+  const handleInputChange = (event) => {
+    setNewFolderTitle(event.target.value);
+  };
+
+  const handleFormSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/folders",
+        { title: newFolderTitle, userId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setFolders([...folders, response.data]);
+      setPopupStatus(false);
+      setNewFolderTitle("");
+    } catch (error) {
+      console.error("Error creating folder:", error);
+    }
+  };
+
   const { folderId } = useParams();
   const [courses, setCourses] = useState([]);
+  const [updatedTitle, setUpdatedTitle] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -132,12 +199,130 @@ function Folder(User) {
 
   return (
     <div>
-      <Header />
+      <form
+        className="cmain__popup"
+        style={{ display: popupStatus ? "flex" : "none" }}
+      >
+        <div className="cmain__popup-inner">
+          <button
+            className="cmain__cross"
+            type="button"
+            onClick={handleClosePopup}
+          >
+            <svg
+              data-name="Layer 1"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 16 16"
+            >
+              <path d="m4.12 6.137 1.521-1.52 7 7-1.52 1.52z" />
+              <path d="m4.12 11.61 7.001-7 1.52 1.52-7 7z" />
+            </svg>
+          </button>
+          <h1>Creating new folder</h1>
+          <input
+            type="text"
+            placeholder="Folder title"
+            value={newFolderTitle}
+            onChange={handleInputChange}
+            required
+          />
+          <div className="cmain__popup-submit-container">
+            <button className="cmain__popup-submit" type="submit">
+              Save
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <div className="cnavigation">
+        <div className="cnavigation__logo">
+          <img
+            src="/img/cake-logo-small.png"
+            alt=""
+            className="cnavigation__logo-img"
+          />
+          <div className="cnavigation__brand">Cake</div>
+        </div>
+        <div className="cnavigation__search-box">
+          <svg
+            className="cnavigation__search-box-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            x="0px"
+            y="0px"
+            width="100"
+            height="100"
+            viewBox="0 0 32 32"
+          >
+            <path d="M 19 3 C 13.488281 3 9 7.488281 9 13 C 9 15.394531 9.839844 17.589844 11.25 19.3125 L 3.28125 27.28125 L 4.71875 28.71875 L 12.6875 20.75 C 14.410156 22.160156 16.605469 23 19 23 C 24.511719 23 29 18.511719 29 13 C 29 7.488281 24.511719 3 19 3 Z M 19 5 C 23.429688 5 27 8.570313 27 13 C 27 17.429688 23.429688 21 19 21 C 14.570313 21 11 17.429688 11 13 C 11 8.570313 14.570313 5 19 5 Z" />
+          </svg>
+          <input
+            className="cnavigation__search-box-bar"
+            type="text"
+            placeholder="Search for folders, tutor,.."
+          />
+        </div>
+        <ul className="cnavigation__link">
+          <div className="cnavigation__dropdown">
+            <button onClick={toggleDropdown} ref={cnavigationDropdown}>
+              <span>Your library</span>
+              <svg
+                width="15"
+                className="cform__month--arrow-brown"
+                height="15"
+                viewBox="0 0 28 25"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M18.2862 21.923C16.3437 25.1569 11.6563 25.1569 9.71382 21.923L1.22939 7.79826C-0.772414 4.46568 1.62799 0.223642 5.51557 0.223642L22.4844 0.223642C26.372 0.223642 28.7724 4.46568 26.7706 7.79826L18.2862 21.923Z"
+                  fill="#734A4A"
+                />
+              </svg>
+            </button>
+            <ul className="cnavigation__dropdown-list">
+              <div className="cnavigation__dropdown-button-container">
+                <button className="cnavigation__dropdown-button cnavigation__dropdown-button-1">
+                  Flash-slices
+                </button>
+                <button className="cnavigation__dropdown-button cnavigation__dropdown-button-2">
+                  Quick-bites
+                </button>
+              </div>
+              <div className="cnavigation__dropdown-item-container">
+                <a href="#" className="cnavigation__dropdown-item">
+                  <h6>Animals</h6>
+                  <img src="/img/avatar1.png" alt="" />
+                </a>
+                {[...Array(5)].map((_, i) => (
+                  <div key={i} className="cnavigation__dropdown-item">
+                    <h6>Animals</h6>
+                    <img src="/img/avatar1.png" alt="" />
+                  </div>
+                ))}
+              </div>
+              <a className="cnavigation__dropdown-all" href="#">
+                All
+              </a>
+            </ul>
+          </div>
+          <li className="cnavigation__link-btn">
+            <a className="cnavigation__link-btn-a" href="#">
+              Help Center
+            </a>
+          </li>
+          <li className="cnavigation__link-btn">
+            <a className="cnavigation__link-btn-a" href="#">
+              Language: VN
+            </a>
+          </li>
+          <img className="cnavigation__avatar" src="/img/avatar2.png" alt="" />
+        </ul>
+      </div>
 
       <div className="cfirst">
         <div className="cfirst__heading">
           <div className="cfirst__title">
-            <h1>My Folder</h1>
+            <h1>Folder: [ gì gì đó ]</h1>
             <svg
               className="cfirst__paw"
               xmlns="http://www.w3.org/2000/svg"
@@ -153,7 +338,6 @@ function Folder(User) {
               />
             </svg>
           </div>
-          <Link to={`/profile`}>
           <svg
             className="cfirst__back"
             xmlns="http://www.w3.org/2000/svg"
@@ -176,10 +360,10 @@ function Folder(User) {
               />
             </g>
           </svg>
-          </Link>
         </div>
+
         <div className="cfirst__filter">
-          <div className="cform__month">
+          <div className={`cform__month ${customSelectActive ? "active" : ""}`}>
             <button
               className="cform__month--button"
               role="combobox"
@@ -192,7 +376,6 @@ function Folder(User) {
               <span className="cform__month--selected-value">
                 {selectedValue}
               </span>
-              <Link to={`/profile`}>
               <svg
                 width="28"
                 className="cform__month--arrow"
@@ -206,7 +389,6 @@ function Folder(User) {
                   fill="#734A4A"
                 />
               </svg>
-              </Link>
             </button>
             <ul
               className={`cform__month--dropdown ${customSelectActive ? "active" : ""
@@ -228,13 +410,15 @@ function Folder(User) {
               </li>
             </ul>
           </div>
+
           <svg
             className="cfirst__plus"
             width="800px"
             height="800px"
             viewBox="0 0 32 32"
-            onClick={() => navigate(`create_course`)}
+
             xmlns="http://www.w3.org/2000/svg"
+            onClick={() => navigate(`create_course`)}
           >
             <title>plus-circle</title>
             <desc>Created with Sketch Beta.</desc>
@@ -254,6 +438,7 @@ function Folder(User) {
               </g>
             </g>
           </svg>
+
         </div>
       </div>
 
@@ -305,14 +490,49 @@ function Folder(User) {
               </svg>
               <span className="cmain__folder-title">{course.title}</span>
             </Link>
-            <button onClick={() => handleDelete(course._id)}>Delete</button>
+            <svg className='cmain__folder-delete' onClick={() => handleDelete(course._id)} width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+              <g id="SVGRepo_bgCarrier" stroke-width="0" />
+
+              <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+
+              <g id="SVGRepo_iconCarrier"> <path d="M10 11V17" stroke="#7a4a4a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /> <path d="M14 11V17" stroke="#7a4a4a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /> <path d="M4 7H20" stroke="#7a4a4a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /> <path d="M6 7H12H18V18C18 19.6569 16.6569 21 15 21H9C7.34315 21 6 19.6569 6 18V7Z" stroke="#7a4a4a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /> <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="#7a4a4a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /> </g>
+
+            </svg>
+
           </div>
         ))}
       </section>
 
-      <Footer />
+      <footer className="cfooter">
+        <div className="cfooter__img-container">
+          <img src="/img/cake-logo-big.png" alt="" className="cfooter__logo" />
+          <h1 className="cfooter__brand">CAKE</h1>
+        </div>
+        <div className="cfooter__text-container">
+          <h3 className="cfooter__h3-author">Author</h3>
+          {[...Array(3)].map((_, i) => (
+            <h4 key={i} className={`cfooter__h4-author-${i + 1}`}>
+              minh
+            </h4>
+          ))}
+          <h4 className="cfooter__h4-author-4">nam</h4>
+          <h3 className="cfooter__h3-about">About CAKE</h3>
+          <h4 className="cfooter__h4-about-1">How CAKE works</h4>
+          <h4 className="cfooter__h4-about-2">Q&A</h4>
+          <h3 className="cfooter__h3-term-of-use">Terms of Use</h3>
+          <h4 className="cfooter__h4-term-of-use">Terms & Privacy</h4>
+        </div>
+        <div className="cfooter__text-container-1">
+          <h3 className="cfooter__h3-acknowledge">University Acknowledgement</h3>
+          <h4 className="cfooter__h4-acknowledge">
+            A project for Hanoi University of Science and Technology's Web
+            Subject Course
+          </h4>
+        </div>
+      </footer>
     </div>
   );
 }
 
-export default Folder;
+export default Course;

@@ -9,11 +9,9 @@ folderRouter.get("/:id", authMiddleware.verifyToken, folderController.getOne);
 folderRouter.post("/", authMiddleware.verifyToken, folderController.create);
 folderRouter.put("/:id", authMiddleware.verifyToken, folderController.update);
 folderRouter.delete("/:id", authMiddleware.verifyToken, folderController.deleteFolder);
-
 folderRouter.put("/add-course/:folderId/:courseId", authMiddleware.verifyToken, folderController.addCourse);
 folderRouter.put("/delete-course/:folderId/:courseId", authMiddleware.verifyToken, folderController.deleteCourse);
-
-// get courses in a folder
 folderRouter.get("/courses/:folderId", authMiddleware.verifyToken, folderController.getCoursesInFolder);
+folderRouter.get("/list/:userId", authMiddleware.verifyToken, folderController.getList); // Add this line
 
 export default folderRouter;

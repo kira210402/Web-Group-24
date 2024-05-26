@@ -97,13 +97,16 @@ const Quiz = () => {
             <section className="hmain">
                 <div className="hstudy__top">
                     <h1 className="hstudy__header">Animals</h1>
-
+                    <Link to={`/update_course/${courseId}`}>
                     <svg className="hstudy__pen">
                         <use xlinkHref="/img/symbol-defs.svg#icon-edit-3"></use>
                     </svg>
+                    </Link>
+                    <Link to={`/course/${courseId}`}>
                     <svg className="hstudy__arrow">
                         <use xlinkHref="/img/symbol-defs.svg#icon-forward"></use>
                     </svg>
+                    </Link>
                 </div>
 
                 <div className="hstudy__stats">
