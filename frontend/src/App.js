@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Admin from './Admin/Admin';
 import Home from './Home/Home';
 import Login from './Login/Login';
 import Main from './Main/Main';
@@ -20,10 +21,12 @@ function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/admin" element={<Admin />} />
+
         <Route path="/" element={ token && userId ? <Main /> : <Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile/:userId" element={<Profile />} />
         <Route path="/quiz/:courseId" element={<Quiz />} />
         <Route path="/flash_card/:courseId" element={<FlashCard />} />
         <Route path="/folder/:folderId" element={<Folder />} />

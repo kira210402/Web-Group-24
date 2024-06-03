@@ -1,0 +1,234 @@
+@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&display=swap');
+
+* {
+  font-family: 'Mogra';
+}
+
+.pfnavigation {
+  width: 98vw;
+  display: flex;
+  padding: 1rem 1rem;
+  background-color: white;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pfnavigation__logo {
+  margin-left: -3rem;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.pfnavigation__logo-img {
+  scale: .7;
+  margin-top: -10px;
+  cursor: pointer;
+}
+
+.pfnavigation__brand {
+  font-family: "Mochiy Pop One", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: #7a4a4a;
+  text-transform: uppercase;
+  font-size: 2rem;
+  margin-right: 2rem;
+  margin-left: -2.3rem;
+}
+
+.pfnavigation__link {
+  display: flex;
+  list-style: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.pfnavigation__link-btn {
+  margin-left: 2rem;
+  padding: .5rem 1rem;
+  height: 100%;
+}
+
+.pfnavigation__link-btn.sign-up {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pfnavigation__link-btn-a:link,
+.pfnavigation__link-btn-a:visited {
+  text-decoration: none;
+  color: #7a4a4a;
+  font-family: "Mogra", system-ui;
+  font-weight: 400;
+  font-style: normal;
+  transition: all .2s;
+}
+
+.pfnavigation__avatar {
+  height: 2.5rem;
+  width: 2.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.admin__container {
+  padding: 20px;
+}
+
+.tabs {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.tabs button {
+  flex: 1;
+  padding: 10px;
+  cursor: pointer;
+  background: #f1f1f1;
+  border: none;
+  border-bottom: 2px solid transparent;
+  outline: none;
+  font-size: 1.5rem;
+  transition: all .1s ease-in-out;
+  border-radius: 10px;
+}
+
+.tabs button:hover {
+  border-bottom: 2px solid #7a4a4a;
+}
+
+.tabs button.active {
+  background: #7a4a4a;
+  color: #fff;
+}
+
+.tab-content {
+  margin-top: 20px;
+}
+
+.tab-content h1 {
+  margin: 4rem 0;
+}
+
+.admin__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin__table th,
+.admin__table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.admin__table td:nth-child(5) div {
+  font-family: 'Dosis';
+  font-weight: 800;
+}
+
+.admin__table th {
+  background-color: #f4f4f4;
+}
+
+.delete-btn {
+  padding: 5px 10px;
+  cursor: pointer;
+  color: #fff;
+  background-color: #d9534f;
+  border: 1px solid #d9534f;
+  outline: none;
+  display: flex;
+  align-items: center;
+  gap: .2rem;
+  border-radius: 5px;
+  transition: all .1s ease-in-out;
+  margin: auto;
+}
+
+.delete-btn:hover {
+  background-color: transparent;
+}
+
+.delete-btn:hover span {
+  color: #d9534f;
+}
+
+.delete-btn:hover svg g {
+  stroke: #d9534f;
+}
+
+.delete-btn svg g {
+  transition: all .1s ease-in-out;
+}
+
+.delete-btn svg {
+  transform: translateY(-.1rem);
+}
+
+.delete-btn span {
+  font-size: .9rem;
+  color: #fff;
+  transition: all .1s ease-in-out;
+}
+
+.avatar-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.avatar-dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  left: -2rem;
+  border-radius: 4px;
+}
+
+.avatar-dropdown-content button {
+  color: #7a4a4a;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 4px;
+  display: flex;
+  gap: .3rem
+}
+
+.avatar-dropdown-content button svg {
+  transform: rotate(180deg);
+  transition: all .2s ease-in-out;
+}
+
+.avatar-dropdown-content button:hover {
+  background-color: #7a4a4a;
+}
+
+.avatar-dropdown-content button:hover span {
+  color: white;
+}
+
+
+.avatar-dropdown-content button:hover svg {
+
+  transform: rotate(180deg) translateX(.2rem);
+}
+
+.avatar-dropdown-content button:hover svg path {
+
+  fill: white
+}
+
+
+.avatar-dropdown:hover .avatar-dropdown-content {
+  display: block;
+}

@@ -6,7 +6,7 @@ import User from "../models/user.model.js";
 
 const getAll = async (req, res) => {
   try {
-    const courses = await Course.find();
+    const courses = await Course.find().populate("userId").populate("folders").populate("cards");
     return res.status(200).json(courses);
   } catch (error) {
     return res.status(500).json({ message: error });
@@ -40,7 +40,7 @@ const getOne = async (req, res) => {
 const create = async (req, res) => {
   const { title, description, listCards, folderId } = req.body;
   try {
-    
+
     const newCourse = await Course.create({
       title,
       description,
@@ -86,7 +86,7 @@ const update = async (req, res) => {
 
     if (!foundCourse) return res.status(404).json({ message: 'course not found!' });
 
-    if (req.payload.id === foundCourse.userId) {
+    if (req.payload.id === foundCourse.userId.toString()) {
 
       await Card.deleteMany({ courseId: id });
 
@@ -126,7 +126,7 @@ const deleteCourse = async (req, res) => {
 
     if (!foundCourse) return res.status(404).json({ message: "Course not found" });
 
-    if (req.payload.id === foundCourse.userId || req.payload.role === "admin") {
+    if (req.payload.id === foundCourse.userId.toString() || req.payload.role === "admin") {
 
       const cards = foundCourse.cards;
 
@@ -172,7 +172,10 @@ const getList = async (req, res) => {
     const courses = await Course.aggregate([
       { $sample: { size: parseInt(limit, 10) || 10 } }
     ]);
-    return res.status(200).json(courses);
+    const populatedCourses = await Promise.all(
+      courses.map(course => Course.populate(course, { path: "userId" }))
+    );
+    return res.status(200).json(populatedCourses);
   } catch (error) {
     return res.status(500).json({ message: error });
   }

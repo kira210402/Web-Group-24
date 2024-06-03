@@ -5,6 +5,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import axios from "axios";
 import Footer from "../components/footer/Footer";
 import Header from "../components/header/Header";
+import { showMessage } from "../components/show_message/ShowMessage";
 import "./style.css"; // Assuming you'll also style it using Main.css
 
 const Main = () => {
@@ -231,11 +232,16 @@ const Main = () => {
           },
         }
       );
-      setFolders([...folders, response.data]);
-      setPopupStatus(false);
-      setNewFolderTitle("");
+      if (response.status === 200 || response.status === 201) {
+        setFolders([...folders, response.data]);
+        showMessage("Success", "Created Successfully", "success");
+        setPopupStatus(false);
+        setNewFolderTitle("");
+      } else {
+        showMessage("Error", "Created Fail", "danger");
+      }
     } catch (error) {
-      console.error("Error creating folder:", error);
+      showMessage("Error", "Created Fail", "danger");
     }
   };
 
@@ -291,20 +297,7 @@ const Main = () => {
               className="myellow__add"
               onClick={() => setPopupStatus(true)}
             >
-              <svg
-                width="37"
-                height="37"
-                viewBox="0 0 37 37"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M17.25 35.5V36.5H19.25V35.5V19.25H35.5H36.5V17.25H35.5H19.25V1V0H17.25V1V17.25H1H0V19.25H1H17.25V35.5Z"
-                  fill="#734A4A"
-                />
-              </svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m-7-7h14" /></svg>
             </button>
           </div>
 
@@ -320,8 +313,12 @@ const Main = () => {
                     <h5>{folder.courses.length} courses</h5>
                     <h6>{folder.description}</h6>
                     <div>
-                      <img src="img/avatar2.png" alt="" />
-                      <h6>{folder.creatorName}</h6>
+                      {folder.userId?.avatar ? (
+                        <img src={`http://localhost:8000/other/image/${folder.userId?.avatar}`} alt="" />
+                      ) : (
+                        <img src="img/avatar.jpeg" alt="" />
+                      )}
+                      <h6>{folder.userId?.username}</h6>
                     </div>
                   </div>
                 </div>
@@ -336,20 +333,7 @@ const Main = () => {
               className="mbrown__add"
               onClick={() => navigate(`/create_course`)}
             >
-              <svg
-                width="37"
-                height="37"
-                viewBox="0 0 37 37"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M17.25 35.5V36.5H19.25V35.5V19.25H35.5H36.5V17.25H35.5H19.25V1V0H17.25V1V17.25H1H0V19.25H1H17.25V35.5Z"
-                  fill="#734A4A"
-                />
-              </svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m-7-7h14" /></svg>
             </button>
           </div>
 
@@ -365,7 +349,12 @@ const Main = () => {
                     <h5>{course.cards.length} cards</h5>
                     <h6>{course.description}</h6>
                     <div>
-                      <img src="img/avatar2.png" alt="" />
+                      {course.userId?.avatar ? (
+                        <img src={`http://localhost:8000/other/image/${course.userId?.avatar}`} alt="" />
+                      ) : (
+                        <img src="img/avatar.jpeg" alt="" />
+                      )}
+                      <h6>{course.userId?.username}</h6>
                     </div>
                   </div>
                 </div>
