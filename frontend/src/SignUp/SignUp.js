@@ -92,7 +92,7 @@ function SignUp() {
                 <h1 className='illu__header'>Welcome to CAKE</h1>
                 <img src="../img/castle.png" alt="Castle illustration" className='illu__img' />
             </div>
-            <form className="form" onSubmit={handleSignup}>
+            <form className="aform" onSubmit={handleSignup}>
                 <span className='form__email'>Email</span>
                 <input 
                     className="form__email-input" 
@@ -119,13 +119,20 @@ function SignUp() {
                 />
 
                 <span className="form__avatar">Avatar</span>
+                <div className='avt__input-container'>
+                    <label className='heheboi' for='heheboi'>
+                        Upload file
+                    </label>
                 <input 
-                    className="form__avatar-input" 
+                    className="form__avatar-inputt" 
                     type="file" 
                     onChange={handleAvatarChange} 
+                    id='heheboi'
                 />
                 {avatarPreview && <img src={avatarPreview} alt="Avatar Preview" className='form__avatar-preview' />}
-
+                </div>
+                
+                <div className='select__container'>
                 <select className='form__select' value={month} onChange={e => setMonth(e.target.value)}>
                     {months.map((m, index) => <option key={index} value={m}>{m}</option>)}
                 </select>
@@ -135,6 +142,8 @@ function SignUp() {
                 <select className='form__select-2' value={year} onChange={e => setYear(e.target.value)}>
                     {years.reverse().map(y => <option key={y} value={y}>{y}</option>)}
                 </select>
+                </div>
+               
                 <label className="form__control">
                     <input type="checkbox" checked={acceptPolicy} onChange={e => setAcceptPolicy(e.target.checked)} />
                     I accept Cake's policy

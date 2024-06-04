@@ -51,15 +51,18 @@ body {
   transform: translateY(2.5rem);
 }
 
-.form {
-  display: grid;
-  grid-template-columns: repeat(4, 23%);
-  grid-template-rows: repeat(14, min-content);
+.aform {
+  display: flex;
+  flex-direction: column;
   padding: 2rem 3rem;
   row-gap: 1.5rem;
   column-gap: 1rem;
 }
-
+.form__input-container{
+  display: flex;
+  width: 100%;
+  height: min-content
+}
 .form__signup {
   outline: none;
   background-color: #7a4a4a;
@@ -158,6 +161,7 @@ body {
   font-size: 1rem;
   color: #7a4a4a;
   font-family: "Mogra", system-ui;
+  
 }
 
 .form__password {
@@ -165,6 +169,35 @@ body {
   font-size: 1rem;
   color: #7a4a4a;
   font-family: "Mogra", system-ui;
+}
+.form__avatar-inputt{
+  display: none
+}
+.heheboi{
+  font-size: 1.5rem;
+  color: white;
+  background-color: #7a4a4a;
+  padding: .5rem;
+  border-radius: 15px;
+  border: 2px solid #7a4a4a;
+  transition: all .15s ease-in-out;
+  cursor: pointer
+}
+.avt__input-container{
+  height: 5rem;
+  display: flex;
+  align-items: center
+}
+.heheboi:hover{
+  background-color: white;
+  color: #7a4a4a
+}
+.avatar__input-container{
+  display: flex;
+  width: 100%;
+  height: min-content;
+  gap: 1rem;
+  justify-content: space-between;
 }
 
 .form__avatar {
@@ -257,7 +290,10 @@ body {
   display: flex;
   justify-content: center;
 }
-
+.select__container{
+  display: flex;
+  width: 100%;
+}
 .form__month--selected-value,
 .form__date--selected-value,
 .form__year--selected-value {
