@@ -5,6 +5,7 @@ import './stylee.css';
 
 function SignUp() {
     const [email, setEmail] = useState('');
+    const [emailError, setEmailError] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [month, setMonth] = useState('Jan');
@@ -30,8 +31,30 @@ function SignUp() {
         }
     }, [month, year]);
 
+    const validateEmail = (email) => {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(String(email).toLowerCase());
+    };
+
+    const handleChange = (e) => {
+        const newEmail = e.target.value;
+        setEmail(newEmail);
+
+        if (!validateEmail(newEmail)) {
+            setEmailError('Invalid email format');
+        } else {
+            setEmailError('');
+        }
+    };
+
     const handleSignup = async (e) => {
         e.preventDefault();
+
+        if (!validateEmail(email)) {
+            setEmailError('Please enter a valid email');
+            return;
+        }
+
         if (!acceptPolicy) {
             alert("You must accept the policy to sign up.");
             return;
@@ -71,16 +94,36 @@ function SignUp() {
             </div>
             <form className="form" onSubmit={handleSignup}>
                 <span className='form__email'>Email</span>
-                <input className="form__email-input" type="text" value={email} onChange={e => setEmail(e.target.value)} />
+                <input 
+                    className="form__email-input" 
+                    type="text" 
+                    value={email} 
+                    onChange={handleChange} 
+                />
+                {emailError && <p style={{ color: 'red' }}>{emailError}</p>}
 
                 <span className="form__user">Username</span>
-                <input className="form__user-input" type="text" value={username} onChange={e => setUsername(e.target.value)} />
+                <input 
+                    className="form__user-input" 
+                    type="text" 
+                    value={username} 
+                    onChange={e => setUsername(e.target.value)} 
+                />
 
                 <span className="form__password">Password</span>
-                <input className="form__password-input" type="password" value={password} onChange={e => setPassword(e.target.value)} />
+                <input 
+                    className="form__password-input" 
+                    type="password" 
+                    value={password} 
+                    onChange={e => setPassword(e.target.value)} 
+                />
 
                 <span className="form__avatar">Avatar</span>
-                <input className="form__avatar-input" type="file" onChange={handleAvatarChange} />
+                <input 
+                    className="form__avatar-input" 
+                    type="file" 
+                    onChange={handleAvatarChange} 
+                />
                 {avatarPreview && <img src={avatarPreview} alt="Avatar Preview" className='form__avatar-preview' />}
 
                 <select className='form__select' value={month} onChange={e => setMonth(e.target.value)}>

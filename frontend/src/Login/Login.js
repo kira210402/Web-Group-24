@@ -1,16 +1,39 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import "./stylee.css";
 
 function Login() {
   const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
+  };
+
+  const handleChange = (e) => {
+    const newEmail = e.target.value;
+    setEmail(newEmail);
+
+    if (!validateEmail(newEmail)) {
+      setEmailError('Invalid email format');
+    } else {
+      setEmailError('');
+    }
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
+
+    if (!validateEmail(email)) {
+      setEmailError('Please enter a valid email');
+      return;
+    }
+
     try {
       const response = await axios.post('http://localhost:8000/auth/login', {
         email,
@@ -44,7 +67,7 @@ function Login() {
       const storedRole = localStorage.getItem('role');
 
       if (storedToken && storedUserId && storedRole) {
-        if(role === 'admin') {
+        if (role === 'admin') {
           navigate('/admin');
         } else {
           navigate('/');
@@ -84,14 +107,15 @@ function Login() {
           className="illu__img"
         />
       </div>
-      <form className="form">
+      <form className="form" onSubmit={handleLogin}>
         <span className="form__email">Email</span>
         <input
           className="form__email-input"
           type="text"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={handleChange}
         />
+        {emailError && <p style={{ color: 'red' }}>{emailError}</p>}
 
         <span className="form__password">Password</span>
         <input
@@ -101,7 +125,7 @@ function Login() {
           onChange={(e) => setPassword(e.target.value)}
         />
         <div className='last-btn'>
-          <button type="submit" className="login-btn" onClick={handleLogin}>
+          <button type="submit" className="login-btn">
             Login
           </button>
           <button type="button" className="signup-btn" onClick={() => navigate("/signup")}>
